@@ -5,7 +5,7 @@ from astropy.timeseries import TimeSeries
 
 # Opening fits file with astropy
 def openfile():
-	ts = TimeSeries.read('./DATA/tess2018206045859-s0001-0000000029829699-0120-s_lc.fits', format = 'kepler.fits')
+	ts = TimeSeries.read('./DATA/raw/tess2018206045859-s0001-0000000029829699-0120-s_lc.fits', format = 'kepler.fits')
 	return ts
 
 # Open FITS and assign data from it to variable stardata
