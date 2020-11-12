@@ -21,9 +21,14 @@ def dirscan():
 
 dirscan()
 
-# Opening fits file with astropy
+num = 0 				#FOR COUNTING WITH TESTING
+# Opening fits files with astropy
 def openfile():
-	ts = TimeSeries.read('./DATA/raw/tess2018206045859-s0001-0000000029829699-0120-s_lc.fits', format = 'kepler.fits')
+	for item in lightcurve_list:
+		global num
+		num= num+1
+		print (num)
+		ts = TimeSeries.read('./DATA/raw/' + item, format = 'kepler.fits')
 	return ts
 
 # Open FITS and assign data from it to variable stardata
