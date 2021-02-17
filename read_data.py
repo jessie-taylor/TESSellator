@@ -101,7 +101,7 @@ def plot_all():
 		ax.title.set_text(lightcurve_list[i])
 		plt.xlabel('Time (JD)')
 		plt.ylabel('PDCSAP flux ($e^{-}/s$')
-		plt.savefig('./outputs/testing1_outputs/' 
+		plt.savefig('./outputs/plots/' 
 				+ lightcurve_list[i][:(len(lightcurve_list[i])-5)] 
 				+ '.png', 
 				bbox_inches = "tight")
@@ -121,7 +121,7 @@ def plt_dft():
 		ax.title.set_text('DFT '+lightcurve_list[i]) # comment out
 		plt.xlabel('Frequency ($d^{-1}$)')
 		plt.ylabel('Power')
-		plt.savefig('./outputs/testing1_outputs/' 
+		plt.savefig('./outputs/plots/' 
 				+ lightcurve_list[i][:(len(lightcurve_list[i])-5)] 
 				+ '_DFT.png', 
 				bbox_inches = "tight")
@@ -136,7 +136,7 @@ def plot_zoomed():
 		plt.title(lightcurve_list[i])
 		plt.xlabel('Time (JD)')
 		plt.ylabel('PDCSAP flux ($e^{-}/s$')
-		plt.savefig('./outputs/testing1_outputs/' 
+		plt.savefig('./outputs/plots/' 
 				+ lightcurve_list[i][:(len(lightcurve_list[i])-5)] 
 				+ '_zoomed'+'.png',
 				 bbox_inches = "tight")
