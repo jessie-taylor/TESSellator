@@ -8,29 +8,35 @@ from keras.layers import Conv2D, MaxPooling2D
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
 import matplotlib.pyplot as plt
-# Loading the training as the first 1000 images and test as final 259.
 
-train_Xgd1 = np.load('New_GdArray.npy')
+# Loading the training as the first 1000 images and test as final 259.
+arraydir = '../DATA/arrays/'
+
+train_Xgd1 = np.load(arraydir + 'New_GdArray.npy')
 #train_Ygd = np.load('GdClass.npy')
 
-train_Xds1 = np.load('New_DsArray.npy')
+train_Xds1 = np.load(arraydir + 'New_DsArray.npy')
 #train_Yds = np.load('dsc.npy')
 
-train_Xhyb1 = np.load('New_HybridArray.npy')
+train_Xhyb1 = np.load(arraydir + 'New_HybridArray.npy')
 #train_Yhyb = np.load('hybridclass.npy')
 
-train_Xnon1 = np.load('New_UnArray.npy')
+train_Xnon1 = np.load(arraydir + 'New_UnArray.npy')
 #train_Ynon = np.load('nonclass.npy')
+
+train_Xbin1 = np.load(arraydir + 'New_BinArray.npy')
 
 train_Xgd =train_Xgd1.transpose(2, 0, 1)
 train_Xds =train_Xds1.transpose(2, 0, 1)
 train_Xhyb =train_Xhyb1.transpose(2, 0, 1)
 train_Xnon =train_Xnon1.transpose(2, 0, 1)
+train_xbin = train_Xbin1.transpose(2,0,1)
 
 train_Ygd=np.full(train_Xgd.shape[0], 1)
 train_Yds=np.full(train_Xds.shape[0], 2)
 train_Yhyb=np.full(train_Xhyb.shape[0], 3)
 train_Ynon=np.full(train_Xnon.shape[0], 0)
+train_Ybin=np.full(train_Xbin.shape[0], 4) # IMPORTANT TO NOTE - I'VE MADE IT #4
 
 # uses the last 259 as test images
 
@@ -56,13 +62,19 @@ train_Xnon = train_Xnon[:1000:]
 train_Ynon = train_Ynon[:1000:]
 #print(train_Xnon.shape, train_Ynon.shape)
 
-test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, test_Xhyb])
+test_Xbin = train_Xbin[50::] # NOTE these 4 lines are the new ones, and where I could change it so it uses less than 1000 for training
+test_Ybin = train_Ybin[50::]
+train_Xbin = train_Xbin[:50:]
+train_Ybin = train_Ybin[:50:]
 
-test_Y = np.concatenate([test_Ynon, test_Ygd, test_Yds, test_Yhyb])
+
+test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, test_Xhyb, test_Xbin])
+
+test_Y = np.concatenate([test_Ynon, test_Ygd, test_Yds, test_Yhyb, test_Ybin])
 
 
-train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, train_Xhyb])
-train_Y = np.concatenate([train_Ynon, train_Ygd, train_Yds, train_Yhyb])
+train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, train_Xhyb, train_Ybin])
+train_Y = np.concatenate([train_Ynon, train_Ygd, train_Yds, train_Yhyb, train_Ybin])
 
 np.save('test_image_data.npy', test_X)
 
