@@ -172,7 +172,7 @@ classifier.add(Dropout(0.5))
 classifier.add(Dense(64, activation='linear'))
 classifier.add(LeakyReLU(alpha=0.1))
 # 4: class 0 or class 1 2 3
-classifier.add(Dense(4, activation='softmax'))
+classifier.add(Dense(5, activation='softmax'))
 
 # Finally compiling all layers with the most accurate lr and metric. Categorical gives us prediction weightings too, I
 # think. Still, can't use binary so.
