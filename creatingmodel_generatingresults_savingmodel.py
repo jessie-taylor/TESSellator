@@ -73,7 +73,7 @@ test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, test_Xhyb, test_Xbin])
 test_Y = np.concatenate([test_Ynon, test_Ygd, test_Yds, test_Yhyb, test_Ybin])
 
 
-train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, train_Xhyb, train_Ybin])
+train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, train_Xhyb, train_Xbin])
 train_Y = np.concatenate([train_Ynon, train_Ygd, train_Yds, train_Yhyb, train_Ybin])
 
 np.save('test_image_data.npy', test_X)
