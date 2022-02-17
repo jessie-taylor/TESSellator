@@ -30,7 +30,7 @@ train_Xgd =train_Xgd1.transpose(2, 0, 1)
 train_Xds =train_Xds1.transpose(2, 0, 1)
 train_Xhyb =train_Xhyb1.transpose(2, 0, 1)
 train_Xnon =train_Xnon1.transpose(2, 0, 1)
-train_xbin = train_Xbin1.transpose(2,0,1)
+train_Xbin = train_Xbin1.transpose(2,0,1)
 
 train_Ygd=np.full(train_Xgd.shape[0], 1)
 train_Yds=np.full(train_Xds.shape[0], 2)
