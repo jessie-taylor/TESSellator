@@ -141,7 +141,7 @@ batch_size = 2
 # Number of runs through all data.
 epochs = 20
 # Used for plotting results later. Number of classes duh.
-num_classes = 4
+num_classes = 5
 
 
 
