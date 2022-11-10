@@ -32,7 +32,8 @@ def run_model(array):
 
   data_together = np.concatenate((data_together, np.load(array)), axis=2)
   print('\nTime to concatenate =', datetime.now()-timehere)
-  # COMMENTED OUT BECAUSE NOT APPLICABLE TO SETS WHERE THE NAMES ARE ALL IN ONE ARRAY ALREADY
+  # COMMENTED OUT BECAUSE NOT APPLICABLE TO SETS WHERE... 
+  # ...THE NAMES ARE ALL IN ONE ARRAY ALREADY.
   # SHOULD BE UNCOMMENTED IF THEY NEED PUTTING TOGETHER
   names_together = np.empty((0), dtype='<U13')
   namepath = array[:-4] + '_names.npy'  # defining path to corresponding name array
