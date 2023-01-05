@@ -38,7 +38,7 @@ skippedlist = [] #list of stars which had no suitable data
 for star in gdordf["Name"]:
   print ("Searching for star", star)
   try:
-    print(lk.search_lightcurve("TIC" + str(star), exptime = 1800) #seeing which sectors are available)
+    print(lk.search_lightcurve("TIC" + str(star), exptime = 1800)) #seeing which sectors are available)
     lc = lk.search_lightcurve("TIC" + str(star), exptime = 1800
                         ).download_all(  # changed to download_all for experimenting with stitching
                         ).stitch(        # putting multiple together
