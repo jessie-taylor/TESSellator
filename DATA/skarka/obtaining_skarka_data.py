@@ -36,15 +36,22 @@ skippedlist = [] #list of stars which had no suitable data
 
 # TESTING - WILL OUTPUT LK PERIODOGRAMS OF STARS - can be modified later so it saves them
 for star in gdordf["Name"]:
-  print ("Searching for star", star)
+  print ("\nSearching for star", star)
   try:
-    print(lk.search_lightcurve("TIC" + str(star), exptime = 1800)) #seeing which sectors are available)
-    lc = lk.search_lightcurve("TIC" + str(star), exptime = 1800
-                        ).download_all(  # changed to download_all for experimenting with stitching
-                        ).stitch(        # putting multiple together
+    print(lk.search_lightcurve("TIC" + str(star), exptime = 1800, author = "TESS-SPOC")) #seeing which sectors are available)
+    lc = lk.search_lightcurve("TIC" + str(star), exptime = 1800, author = "TESS-SPOC"
+                        ).download(  # changed to download_all for experimenting with stitching
+#                        ).stitch(        # putting multiple together
                         ).remove_nans()
-    LombScarglePeriodogram.from_lightcurve(lc, ny).plot() # Creating LSP from data before and plotting
-    plt.show()
-  except:
+    LombScarglePeriodogram.from_lightcurve(lc).plot() # Should add nyquist_factor arg
+    plt.ylim(0,500) # Setting y limits to same as used with Kepler data
+    plt.tick_params(axis = 'both', which = 'both', direction = 'out') # Moving ticks to outside of plot
+    plt.savefig("./gdor_periodograms_delete_later/" + str(star) + ".png")
+    lc.plot()    # INSERT LINE HERE FOR PLOTTING THE LC BEFORE DFT
+    plt.savefig("./gdor_periodograms_delete_later/" + str(star) + "_lc.png")
+  except AttributeError:  # Error handling if no data available, as the download fn will output AttributeError
     print("Skipped star", star)
     skippedlist.append(star)
+
+# Print total number of stars and those skipped due to no available data
+print( "\nTotal stars searched for:", len(gdordf["Name"]), "\nTotal skipped:", len(skippedlist))
