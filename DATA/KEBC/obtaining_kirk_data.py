@@ -1,4 +1,6 @@
 import pandas as pd
+import lightkurve as lk
+from lightkurve.periodogram import LombScarglePeriodogram
 
 # Getting the first 11 columns, as it imports 12 with the last one being blank 
 csv = pd.read_csv('./KEBCv3.csv', header=7, usecols=[i for i in range(11)])
@@ -8,7 +10,7 @@ csv = pd.read_csv('./KEBCv3.csv', header=7, usecols=[i for i in range(11)])
 skippedlist = []
 # Copied from obtaining_skarka_data.py
 # TESTING - WILL OUTPUT LK PERIODOGRAMS OF STARS - can be modified later so it saves them
-for star in csv["Name"]:
+for star in csv["#KIC"]:
   print ("\nSearching for star", star)
   try:
     print(lk.search_lightcurve("TIC" + str(star), exptime = 1800, author = "TESS-SPOC")) #seeing which sectors are available)
