@@ -16,6 +16,7 @@ for star in csv["#KIC"]:
   kicid = str(star)
   # Obtain TIC from KIC
   # With exception for if timeout occurs
+  print ("\nSearching for star \nKIC", kicid)
   try:
     star = TICer(str(star))
   except ConnectionError:
@@ -23,18 +24,32 @@ for star in csv["#KIC"]:
     print ("Timeout from Simbad, waiting 30 seconds and retrying")
     sleep(30)
     star = TICer(str(star))
-  print ("\nSearching for star TIC", star, ", KIC", kicid)
+  print ("TIC", star)
   try:
     # See which sectors are available
-    print(lk.search_lightcurve("TIC" + str(star), 
-                                exptime = 1800, 
-                                author = "TESS-SPOC"))
-    lc = lk.search_lightcurve("TIC" + str(star), 
-                               exptime = 1800, 
-                               author = "TESS-SPOC"
-                        ).download(  # changed to download_all for stitching
-#                        ).stitch(        # putting multiple together
-                        ).remove_nans()
+    # With error handling if timeout
+    try: 
+      print(lk.search_lightcurve("TIC" + str(star), 
+                                  exptime = 1800, 
+                                  author = "TESS-SPOC"))
+      lc = lk.search_lightcurve("TIC" + str(star), 
+                                 exptime = 1800, 
+                                 author = "TESS-SPOC"
+                          ).download(  # changed to download_all for stitching
+#                          ).stitch(        # putting multiple together
+                          ).remove_nans()
+    except ConnectionError:
+      print ("Timeout from Simbad, waiting 30 seconds and retrying")
+      sleep(30)
+      print(lk.search_lightcurve("TIC" + str(star), 
+                                  exptime = 1800, 
+                                  author = "TESS-SPOC"))
+      lc = lk.search_lightcurve("TIC" + str(star), 
+                                 exptime = 1800, 
+                                 author = "TESS-SPOC"
+                          ).download(  # changed to download_all for stitching
+#                          ).stitch(        # putting multiple together
+                          ).remove_nans()
     # Can add nyquist_factor arg to this if needed
     LombScarglePeriodogram.from_lightcurve(lc).plot()
     # Setting y limits to same as used with Kepler data
@@ -57,6 +72,6 @@ for star in csv["#KIC"]:
       skippedlist.append(star)
 
 # Print total number of stars and those skipped due to no available data
-print( "\nTotal stars searched for:", len(csv["Name"]), 
+print( "\nTotal stars searched for:", len(csv["#KIC"]), 
        "\nTotal skipped:", len(skippedlist))
 
