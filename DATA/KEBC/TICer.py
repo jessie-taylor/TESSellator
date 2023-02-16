@@ -28,7 +28,14 @@ def TICer(KIC_ID: str):
   ids = Simbad.query_objectids(("KIC" + KIC_ID))
   # Convert to dataframe
   dfids = pd.DataFrame()
-  dfids["ID"] = ids.to_pandas() 
+  # Still converting to dataframe
+  # But error handling in case ID not found in Simbad
+  try:
+    dfids["ID"] = ids.to_pandas()
+  except AttributeError:
+    warnings.warn("No TIC found for input KIC " + KIC_ID
+                                                + "returning None")
+    return None 
   # Properly decode
   dfids["ID"] = dfids["ID"].str.decode("utf-8")
   # Generate mask so only entries which state they
