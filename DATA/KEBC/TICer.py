@@ -33,8 +33,8 @@ def TICer(KIC_ID: str):
   try:
     dfids["ID"] = ids.to_pandas()
   except AttributeError:
-    warnings.warn("No TIC found for input KIC " + KIC_ID
-                                                + "returning None")
+    warnings.warn("KIC not found in Simbad database " + KIC_ID
+                                                      + "returning None")
     return None 
   # Properly decode
   dfids["ID"] = dfids["ID"].str.decode("utf-8")
