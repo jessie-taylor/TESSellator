@@ -91,7 +91,7 @@ def make_array(ids: list, catname: str):
   """
   # obtain df of DFTs from list of IDs
   dftdf = get_dfts(ids)
-  
+    
   #
   
 # outside of function - call on make_array to generate arrays
@@ -99,10 +99,10 @@ def make_array(ids: list, catname: str):
 
 # Obtain list of EB TICs 
 eb_ids = ebs()
-# Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 20 for speed of testing
+# Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 100 for speed of testing
 # str([TIC id] + "_lc") is the dictionary key the lightcurves are under
 # str([TIC id] + "_dft") is the key for the dfts
-ebs_data = get_dfts(eb_ids[0:20])
+ebs_data = get_dfts(eb_ids[0:100])
 # Save a backup of the data
 # So doesn't need to be redownloaded if needed later
 # can use lc.to_fits(path='FITS_PATH.fits', overwrite = True) and make it use the names of the files
@@ -114,8 +114,11 @@ for star in eb_ids:
     # Save lc to FITS file
     lc.to_fits(path = str("./FITS/" + star + ".fits"),
                overwrite = True)
-  except KeyError:
+  # If no TIC found (ie entry in eb_ids = None)
+  except TypeError:
     continue
+  # If no corresponding lc
+  except KeyError:
 # Make and save arrays for data
 make_array(ebs_data, "ebs")
 
