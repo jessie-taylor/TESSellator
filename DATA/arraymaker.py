@@ -47,6 +47,7 @@
 # Rewriting for TESS data in 2023
 # Keep all import stuff from above (lines 2 - 6)
 from KEBC.get_ebs import ebs
+from get_dfts import get_dfts
 
 # First, gather the ids of one catalog using the kebc module ebs()
 # Then send the list of IDs to get_dfts to obtain a dataframe of the DFTs & IDs
@@ -57,6 +58,7 @@ import matplotlib.pyplot as plt
 import os
 from PIL import Image
 from datetime import datetime
+import lightkurve as lk
 
 CompleteArray = np.empty([480, 640, 0])
 NameArray = []
@@ -89,13 +91,31 @@ def make_array(ids: list, catname: str):
   """
   # obtain df of DFTs from list of IDs
   dftdf = get_dfts(ids)
-
+  
   #
   
 # outside of function - call on make_array to generate arrays
 # for each one of the catalogs
 
-# Use ebs to generate list of binary TIC IDs
-ebinaries = ebs()
-make_array(ebinaries, "ebins")
+# Obtain list of EB TICs 
+eb_ids = ebs()
+# Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 20 for speed of testing
+# str([TIC id] + "_lc") is the dictionary key the lightcurves are under
+# str([TIC id] + "_dft") is the key for the dfts
+ebs_data = get_dfts(eb_ids[0:20])
+# Save a backup of the data
+# So doesn't need to be redownloaded if needed later
+# can use lc.to_fits(path='FITS_PATH.fits', overwrite = True) and make it use the names of the files
+for star in eb_ids:
+  # Put in try/except because not all IDs are going to have lcs associated
+  try:
+    # Obtain lc from dictionary key
+    lc = ebs_data[str(star + "_lc")]
+    # Save lc to FITS file
+    lc.to_fits(path = str("./FITS/" + star + ".fits"),
+               overwrite = True)
+  except KeyError:
+    continue
+# Make and save arrays for data
+make_array(ebs_data, "ebs")
 
