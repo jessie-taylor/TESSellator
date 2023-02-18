@@ -69,7 +69,7 @@ def get_dfts(ids: list):
         print("Skipped star", star)
         skippedlist.append(star)
   # Print total number of stars and those skipped due to no available data
-  print( "\nTotal stars searched for:", len(csv["#KIC"]), 
+  print( "\nTotal stars searched for:", len(ids), 
          "\nTotal skipped:", len(skippedlist))
 
   return stars_data
