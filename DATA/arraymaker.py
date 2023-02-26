@@ -103,7 +103,7 @@ def make_array(ids: list, catname: str):
   # [ might want to add an exception if no data was found 
   # but see where the error pops up first
   for starid in ids:
-    print('On file', total_i, '/', len(ids))
+    print('On star', total_i, '/', len(ids))
     # Counting total number for recording
     i = i + 1
     total_i = total_i + 1
@@ -183,8 +183,8 @@ for star in eb_ids:
   # If no corresponding lc
   except KeyError:
     continue
-# Make and save arrays for data
-make_array(ebs_data, "ebs")
+# Make and save arrays for data ------------------------------------ONLY NEEDS TO BE IDS, STUFF FROM BEFORE CAN BE MOVED ELSEWHERE
+make_array(eb_ids, "ebs")
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
