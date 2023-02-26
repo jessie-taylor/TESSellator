@@ -88,6 +88,7 @@ def make_array(ids: list, catname: str):
   namearray = []
   completearray = np.empty([480, 640, 0])
   total_i = 0
+  i = 0
   # obtain DFTs from list of IDs
   stars_data = get_dfts(ids)
   
