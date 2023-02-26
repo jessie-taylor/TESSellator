@@ -181,6 +181,7 @@ for star in eb_ids:
     continue
   # If no corresponding lc
   except KeyError:
+    continue
 # Make and save arrays for data
 make_array(ebs_data, "ebs")
 
