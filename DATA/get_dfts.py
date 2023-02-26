@@ -63,8 +63,8 @@ def get_dfts(ids: list):
     # as the download function will output AttributeError
     except AttributeError:
       if star == None:
-        print("Skipped star KIC ", kicid)
-        skippedlist.append("KIC " + kicid)
+        print("Skipped star KIC ", star)
+        skippedlist.append("KIC " + star)
       else:
         print("Skipped star", star)
         skippedlist.append(star)
