@@ -60,10 +60,6 @@ from PIL import Image
 from datetime import datetime
 import lightkurve as lk
 
-CompleteArray = np.empty([480, 640, 0])
-NameArray = []
-total_i = 0
- 
 # function for getting dfts from get_dfts
 # and putting them in arrays
 # Made as a function so it can be called for each of the catalogues
@@ -89,11 +85,65 @@ def make_array(ids: list, catname: str):
       Numpy array generated and saved with name
       corresponding to catname input string.
   """
-  # obtain df of DFTs from list of IDs
-  dftdf = get_dfts(ids)
-    
-  #
+  namearray = []
+  completearray = np.empty([480, 640, 0])
+  total_i = 0
+  # obtain DFTs from list of IDs
+  stars_data = get_dfts(ids)
   
+  # Remove ids that come up as None using a filter
+  print ("Removing Nones from list. Length of list before filtering:", 
+         len(ids))
+  idsfiltered = filter(lambda item: item is not None, ids)
+  ids = list(idsfiltered)
+  print ("Nones removed, new length of TIC ID list:", len(ids))
+  
+  # Using each ID to loop through each star in the dictionary
+  # [ might want to add an exception if no data was found 
+  # but see where the error pops up first
+  for starid in ids:
+    print('On file', total_i, '/', len(ids))
+    # Counting total number for recording
+    i = i + 1
+    total_i = total_i + 1
+    # Get the time now, for seeing how long each iteration takes
+    timehere = datetime.now()
+
+    # Obtain the dft for this star
+    dft = stars_data[str(starid) + "_dft"]
+    
+    # Add name to namearray for keeping track of which star is which
+    namearray.append(starid)
+
+    # for plotting, can get frequency with dft.frequency
+    # can also obtain period and power the same way 
+    plt.plot(dft.frequency, dft.power)
+    plt.ylim(-1, 500)
+    plt.savefig("arraymakingplot_deleteaftercomplete.png")
+    
+    # Add image to array
+    imageArray = Image.open('arraymakingplot_deleteaftercomplete.png')
+    image2 =imagearray.convert('L')
+    arrayappender =np.asarray(image2, dtype="int32")
+    completearray =np.dstack((arrayappender, completearray))
+    plt.clf()
+
+    # Save array if it gets to 1000 entries, to avoid memory issues
+    if i == 1000:
+      #naming array with which stars it contains
+      arrayname = "arrays/" + catname + "_" + str(total_i) + ".npy" 
+      np.save(arrayname, completearray) #save array every 1000 files
+      np.save(arrayname[:-4] + '_names.npy', namearray)  # ADDED FOR NAMING
+      completearray = np.empty([480, 640, 0]) #clear array that's just been saved
+      namearray = [] # Clearing naming array
+      i = 0 #reset number to 0
+    print('time to complete loop =', datetime.now()-timehere) #print time to loop
+    
+  print(CompleteArray.shape)
+  np.save('OutputArrays/' + dir[:-1] + '_' + str(total_i) + '.npy', CompleteArray) #save remaining files
+  np.save('OutputArrays/' + dir[:-1] + '_' + str(total_i) + '_names.npy', NameArray)  # ADDED FOR NAMING
+
+ 
 # outside of function - call on make_array to generate arrays
 # for each one of the catalogs
 
@@ -105,7 +155,6 @@ eb_ids = ebs()
 ebs_data = get_dfts(eb_ids[0:100])
 # Save a backup of the data
 # So doesn't need to be redownloaded if needed later
-# can use lc.to_fits(path='FITS_PATH.fits', overwrite = True) and make it use the names of the files
 for star in eb_ids:
   # Put in try/except because not all IDs are going to have lcs associated
   try:
@@ -122,3 +171,6 @@ for star in eb_ids:
 # Make and save arrays for data
 make_array(ebs_data, "ebs")
 
+# EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
+# It's a dictionary, so can use lc.meta["TEFF"] etc
+# This info is also still retained in the dft
