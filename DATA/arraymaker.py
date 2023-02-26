@@ -130,18 +130,31 @@ def make_array(ids: list, catname: str):
 
     # Save array if it gets to 1000 entries, to avoid memory issues
     if i == 1000:
-      #naming array with which stars it contains
-      arrayname = "arrays/" + catname + "_" + str(total_i) + ".npy" 
-      np.save(arrayname, completearray) #save array every 1000 files
-      np.save(arrayname[:-4] + '_names.npy', namearray)  # ADDED FOR NAMING
-      completearray = np.empty([480, 640, 0]) #clear array that's just been saved
-      namearray = [] # Clearing naming array
-      i = 0 #reset number to 0
-    print('time to complete loop =', datetime.now()-timehere) #print time to loop
+      # Naming array with which stars it contains
+      arrayname = "arrays/" + catname + "_" + str(total_i) + ".npy"
+      # Save array of plots
+      np.save(arrayname, completearray)
+      # Save array of names
+      np.save(arrayname[:-4] + '_names.npy', namearray)
+      # Clear array ready for next 1000
+      completearray = np.empty([480, 640, 0])
+      namearray = []
+      # Reset to keep track of how many are in next array
+      i = 0
+    # To keep track of how long things take - print time taken
+    print('time to complete loop =', datetime.now()-timehere)
     
   print(CompleteArray.shape)
-  np.save('OutputArrays/' + dir[:-1] + '_' + str(total_i) + '.npy', CompleteArray) #save remaining files
-  np.save('OutputArrays/' + dir[:-1] + '_' + str(total_i) + '_names.npy', NameArray)  # ADDED FOR NAMING
+  np.save('OutputArrays/' 
+          + catname 
+	  + '_' 
+	  + str(total_i) 
+	  + '.npy', CompleteArray) #save remaining files
+  np.save('OutputArrays/' 
+          + catname 
+	  + '_' 
+	  + str(total_i) 
+	  + '_names.npy', NameArray)  # ADDED FOR NAMING
 
  
 # outside of function - call on make_array to generate arrays
