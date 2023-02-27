@@ -39,9 +39,9 @@ def get_dfts(ids: list):
                             ).download(  # change to download_all for stitching
 #                            ).stitch(        # putting multiple together
                             ).remove_nans()
-      except ConnectionError:
-        print ("Timeout from Simbad, waiting 30 seconds and retrying")
-        sleep(30)
+      except: # Removed specifying ConnectionError: as it was failing strangely
+        print ("Timeout from Simbad, waiting 60 seconds and retrying")
+        sleep(60)
         print(lk.search_lightcurve("TIC" + str(star), 
                                     exptime = 1800, 
                                     author = "TESS-SPOC"))
