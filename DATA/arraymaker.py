@@ -146,12 +146,12 @@ def make_array(ids: list, catname: str):
     print('time to complete loop =', datetime.now()-timehere)
     
   print(CompleteArray.shape)
-  np.save('OutputArrays/' 
+  np.save('arrays/' 
           + catname 
 	  + '_' 
 	  + str(total_i) 
 	  + '.npy', CompleteArray) #save remaining files
-  np.save('OutputArrays/' 
+  np.save('arrays/' 
           + catname 
 	  + '_' 
 	  + str(total_i) 
