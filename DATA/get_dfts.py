@@ -32,7 +32,7 @@ def get_dfts(ids: list):
     if path.exists("./FITS/" + str(star) + ".fits"):
       # Import to lc, and perform dft as below
       lc = lk.read("./FITS/" + str(star) + ".fits")
-      dft = dft.LombScarglePeriodogram.from_lightcurve(lc)
+      dft = LombScarglePeriodogram.from_lightcurve(lc)
 
       # Add to dictionary
       stars_data[str(star + "_lc")] = lc
