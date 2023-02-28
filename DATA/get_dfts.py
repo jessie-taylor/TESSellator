@@ -30,6 +30,7 @@ def get_dfts(ids: list):
     # Check if lc already lives in ./FITS/
     # if it does then just append and continue
     if path.exists("./FITS/" + str(star) + ".fits"):
+      print ("FITS file found on disk. Loading instead of downloading.")
       # Import to lc, and perform dft as below
       lc = lk.read("./FITS/" + str(star) + ".fits")
       dft = LombScarglePeriodogram.from_lightcurve(lc)
