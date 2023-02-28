@@ -89,15 +89,18 @@ def make_array(ids: list, catname: str):
   completearray = np.empty([480, 640, 0])
   total_i = 0
   i = 0
-  # obtain DFTs from list of IDs
-  stars_data = get_dfts(ids)
-  
+
   # Remove ids that come up as None using a filter
   print ("Removing Nones from list. Length of list before filtering:", 
          len(ids))
   idsfiltered = filter(lambda item: item is not None, ids)
   ids = list(idsfiltered)
   print ("Nones removed, new length of TIC ID list:", len(ids))
+
+
+  # obtain DFTs from list of IDs
+  stars_data = get_dfts(ids)
+  
   
   # Using each ID to loop through each star in the dictionary
   # [ might want to add an exception if no data was found 
@@ -110,8 +113,14 @@ def make_array(ids: list, catname: str):
     # Get the time now, for seeing how long each iteration takes
     timehere = datetime.now()
 
-    # Obtain the dft for this star
-    dft = stars_data[str(starid) + "_dft"]
+    # Try/Except in case no dft available for star
+    try:
+      # Obtain the dft for this star
+      dft = stars_data[str(starid) + "_dft"]
+    # If no DFT available
+    except KeyError:
+      print ("Skipped", starid, "due to no available LC data")
+      continue
     
     # Add name to namearray for keeping track of which star is which
     namearray.append(starid)
