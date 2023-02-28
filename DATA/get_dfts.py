@@ -8,6 +8,7 @@ import pandas as pd
 import lightkurve as lk
 from time import sleep
 from lightkurve.periodogram import LombScarglePeriodogram
+from os import path
 
 def get_dfts(ids: list):
   """
@@ -25,6 +26,21 @@ def get_dfts(ids: list):
     #                                                             they dared me
     #                                                             bet i couldnt
     #                                                                  dared me
+
+    # Check if lc already lives in ./FITS/
+    # if it does then just append and continue
+    if path.exists("./FITS/" + str(star) + ".fits"):
+      # Import to lc, and perform dft as below
+      lc = lk.read("./FITS/" + str(star) + ".fits")
+      dft = LombScarglePeriodogram.from_lightcurve(lc)
+
+      # Add to dictionary
+      stars_data[str(star + "_lc")] = lc
+      stars_data[str(star + "_dft")] = dft
+      #move onto next star id, skipping 
+      continue
+      # ------------------------------------------------------------------------ADD SAVING FUNCTION FOR ONES DOWNLOADED LATER
+
     try:
       # See which sectors are available
       # and download them (or first available if download_all not used)
@@ -59,6 +75,11 @@ def get_dfts(ids: list):
       stars_data[str(star + "_lc")] = lc
       stars_data[str(star + "_dft")] = dft
 
+      # Save backup of data so it doesn't 
+      # need to be redownloaded if needed later
+      lc.to_fits(path = str("./FITS/" + star + ".fits"),
+                 overwrite = True)
+
       # Error handling if no data available
     # as the download function will output AttributeError
     except AttributeError:
@@ -67,6 +88,8 @@ def get_dfts(ids: list):
       else:
         print("Skipped star", star)
         skippedlist.append(star)
+
+
   # Print total number of stars and those skipped due to no available data
   print( "\nTotal stars searched for:", len(ids), 
          "\nTotal skipped:", len(skippedlist))
