@@ -193,7 +193,7 @@ eb_ids = ebs()
 #  except KeyError:
 #    continue
 # Make and save arrays for data ------------------------------------ONLY NEEDS TO BE IDS, STUFF FROM BEFORE CAN BE MOVED ELSEWHERE
-make_array(eb_ids[0:40], "ebs") #--------------------------------------------------- FIRST 100 FOR TESTING ONLY
+make_array(eb_ids, "ebs") #--------------------------------------------------- FIRST 100 FOR TESTING ONLY
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
