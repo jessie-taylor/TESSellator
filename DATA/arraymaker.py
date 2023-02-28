@@ -132,7 +132,7 @@ def make_array(ids: list, catname: str):
     plt.savefig("arraymakingplot_deleteaftercomplete.png")
     
     # Add image to array
-    imageArray = Image.open('arraymakingplot_deleteaftercomplete.png')
+    imagearray = Image.open('arraymakingplot_deleteaftercomplete.png')
     image2 =imagearray.convert('L')
     arrayappender =np.asarray(image2, dtype="int32")
     completearray =np.dstack((arrayappender, completearray))
