@@ -154,17 +154,17 @@ def make_array(ids: list, catname: str):
     # To keep track of how long things take - print time taken
     print('time to complete loop =', datetime.now()-timehere)
     
-  print(CompleteArray.shape)
+  print(completearray.shape)
   np.save('arrays/' 
           + catname 
 	  + '_' 
 	  + str(total_i) 
-	  + '.npy', CompleteArray) #save remaining files
+	  + '.npy', completearray) #save remaining files
   np.save('arrays/' 
           + catname 
 	  + '_' 
 	  + str(total_i) 
-	  + '_names.npy', NameArray)  # ADDED FOR NAMING
+	  + '_names.npy', namearray)  # ADDED FOR NAMING
 
  
 # outside of function - call on make_array to generate arrays
@@ -173,27 +173,27 @@ def make_array(ids: list, catname: str):
 # Obtain list of EB TICs 
 eb_ids = ebs()
 # Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 100 for speed of testing
-# str([TIC id] + "_lc") is the dictionary key the lightcurves are under
-# str([TIC id] + "_dft") is the key for the dfts
-ebs_data = get_dfts(eb_ids[0:100])
+# this str([TIC id] + "_lc") is the dictionary key the lightcurves are under
+# this str([TIC id] + "_dft") is the key for the dfts
+# ebs_data = get_dfts(eb_ids[0:1])
 # Save a backup of the data
 # So doesn't need to be redownloaded if needed later
-for star in eb_ids:
-  # Put in try/except because not all IDs are going to have lcs associated
-  try:
-    # Obtain lc from dictionary key
-    lc = ebs_data[str(star + "_lc")]
-    # Save lc to FITS file
-    lc.to_fits(path = str("./FITS/" + star + ".fits"),
-               overwrite = True)
-  # If no TIC found (ie entry in eb_ids = None)
-  except TypeError:
-    continue
-  # If no corresponding lc
-  except KeyError:
-    continue
+#for star in eb_ids:
+#  # Put in try/except because not all IDs are going to have lcs associated
+#  try:
+#    # Obtain lc from dictionary key
+#    lc = ebs_data[str(star + "_lc")]
+#    # Save lc to FITS file
+#    lc.to_fits(path = str("./FITS/" + star + ".fits"),
+#               overwrite = True)
+#  # If no TIC found (ie entry in eb_ids = None)
+#  except TypeError:
+#    continue
+#  # If no corresponding lc
+#  except KeyError:
+#    continue
 # Make and save arrays for data ------------------------------------ONLY NEEDS TO BE IDS, STUFF FROM BEFORE CAN BE MOVED ELSEWHERE
-make_array(eb_ids, "ebs")
+make_array(eb_ids[0:40], "ebs") #--------------------------------------------------- FIRST 100 FOR TESTING ONLY
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
