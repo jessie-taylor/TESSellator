@@ -40,7 +40,6 @@ def get_dfts(ids: list):
       stars_data[str(star + "_dft")] = dft
       #move onto next star id, skipping 
       continue
-      # ------------------------------------------------------------------------ADD SAVING FUNCTION FOR ONES DOWNLOADED LATER
 
     try:
       # See which sectors are available
@@ -90,6 +89,9 @@ def get_dfts(ids: list):
         print("Skipped star", star)
         skippedlist.append(star)
 
+  # Write list of skipped files so they can be skipped on later runs
+  with open("skippedlist.txt", "w") as fp:
+    fp.write("\n".join(skippedlist))
 
   # Print total number of stars and those skipped due to no available data
   print( "\nTotal stars searched for:", len(ids), 
