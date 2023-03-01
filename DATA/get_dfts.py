@@ -102,9 +102,9 @@ def get_dfts(ids: list):
         print("Skipped star", star)
         skippedlist.append(star)
 
-  # Write list of skipped files so they can be skipped on later runs
-  with open("skippedlist.txt", "w") as fp:
-    fp.write("\n".join(skippedlist))
+    # Write list of skipped files so they can be skipped on later runs
+    with open("skippedlist.txt", "w") as fp:
+      fp.write("\n".join(skippedlist))
 
   # Print total number of stars and those skipped due to no available data
   print( "\nTotal stars searched for:", len(ids), 
