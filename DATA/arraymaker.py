@@ -59,6 +59,9 @@ import os
 from PIL import Image
 from datetime import datetime
 import lightkurve as lk
+from os import path, listdir
+from os.path import isfile, join
+
 
 # function for getting dfts from get_dfts
 # and putting them in arrays
@@ -97,10 +100,20 @@ def make_array(ids: list, catname: str):
   ids = list(idsfiltered)
   print ("Nones removed, new length of TIC ID list:", len(ids))
 
+  # Check to see if arrays already exist for this set
+  # This is blind to the number contained in the arrays,
+  # ie if the arrays represent all available data
+  filelist= [f for f in listdir("./arrays/") if isfile(join("./arrays", f))]
+  for f in filelist:
+    if f[:(len(catname))] == catname:
+      print ("\nArrays already exist for this classification.")
+      print ("Would you like to continue anyway (overwriting previous)? y/n")
+      answer = input()
+      if answer == "n":
+        break
 
   # obtain DFTs from list of IDs
   stars_data = get_dfts(ids)
-  
   
   # Using each ID to loop through each star in the dictionary
   # [ might want to add an exception if no data was found 
