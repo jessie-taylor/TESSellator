@@ -19,13 +19,26 @@ def get_dfts(ids: list):
   # format will be [star_name]_lc for lightcurve
   # and [star_name]_dft for dft
   stars_data = {}
+  
+  # Check for stars which have been skipped by previous runs
+  # due to no data remotely
+  prev_skipped = []
+  with open("skippedlist.txt", "r") as fp:
+    for line in fp:
+      x = line[:-1]
+      prev_skipped.append(x)
 
   for star in ids:
-    # altered version of what's in obtaining_kirk_data.py ~~~~~~~~~~~~~~~~~~~~~
     #                                           ~~~~~~~~ edited it line by line
     #                                                             they dared me
     #                                                             bet i couldnt
     #                                                                  dared me
+
+    # Check if star has been skipped before:
+    if prev_skipped.count(str(star)) > 0:
+      print ("Star skipped due to 0 data on previous runs. Continuing to next")
+      skippedlist.append(star)
+      continue
 
     # Check if lc already lives in ./FITS/
     # if it does then just append and continue
