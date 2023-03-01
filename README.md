@@ -1,9 +1,6 @@
-TESSelator is a program for obtaining TESS files, converting them into
-lightcurves, and plotting them.
+TESSellator is a code for using TESS files for classification via machine learning.
 
-Work will start on initially being able to plot and work with TESS lightcurves.
-Then, the end goal is for it to be able to use TESS Full Frame Images (FFI)
-and convert them into useable lightcurves for each star present.
+Arraymaker is designed to be run from the DATA directory and calls on the scripts in the subdirectories to obtain the data using LightKurve.
 
-This will probably require aperture photometry, as well as use of Astroquery and
-Lightkurve libraries.
+It then generates arrays of the data, for use in a CNN machine learning process (not yet created).
+The lightcurve data is also saved in DATA/FITS/ for use later.
