@@ -57,9 +57,11 @@ def make_array(ids: list, catname: str):
   # Check to see if arrays already exist for this set
   # This is blind to the number contained in the arrays,
   # ie if the arrays represent all available data
+  # Setting variable answer so it can be used before setting
+  answer = None
   filelist= [f for f in listdir("./arrays/") if isfile(join("./arrays", f))]
   for f in filelist:
-    if f[:(len(catname))] == catname:
+    if f[:(len(catname))] == catname and answer == None:
       print ("\nArrays already exist for this classification.")
       print ("Would you like to continue anyway (overwriting previous)? y/n")
       answer = input()
@@ -76,9 +78,6 @@ def make_array(ids: list, catname: str):
   # but see where the error pops up first
   for starid in ids:
     print('On star', total_i, '/', len(ids))
-    # Counting total number for recording
-    i = i + 1
-    total_i = total_i + 1
     # Get the time now, for seeing how long each iteration takes
     timehere = datetime.now()
 
@@ -107,6 +106,10 @@ def make_array(ids: list, catname: str):
     completearray =np.dstack((arrayappender, completearray))
     plt.clf()
 
+    # Counting total number for recording
+    i = i + 1
+    total_i = total_i + 1
+
     # Save array if it gets to 1000 entries, to avoid memory issues
     if i == 1000:
       # Naming array with which stars it contains
@@ -134,6 +137,7 @@ def make_array(ids: list, catname: str):
 	  + '_' 
 	  + str(total_i) 
 	  + '_names.npy', namearray)  # ADDED FOR NAMING
+  print(len(namearray))
 
  
 # outside of function - call on make_array to generate arrays
