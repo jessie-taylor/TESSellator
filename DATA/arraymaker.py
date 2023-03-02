@@ -109,8 +109,10 @@ def make_array(ids: list, catname: str):
       print ("\nArrays already exist for this classification.")
       print ("Would you like to continue anyway (overwriting previous)? y/n")
       answer = input()
-      if answer == "n":
-        break
+  if answer == "n":
+    return None
+        
+	
 
   # obtain DFTs from list of IDs
   stars_data = get_dfts(ids)
