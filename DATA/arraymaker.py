@@ -58,7 +58,7 @@ def make_array(ids: list, catname: str):
   filelist= [f for f in listdir("./arrays/") if isfile(join("./arrays", f))]
   for f in filelist:
     if f[:(len(catname))] == catname and answer == None:
-      print ("\nArrays already exist for this classification.")
+      print ("\nArrays already exist for the class", catname)
       print ("Would you like to continue anyway (overwriting previous)? y/n")
       answer = input()
   if answer == "n":
