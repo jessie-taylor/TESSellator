@@ -1,5 +1,5 @@
 # Small module for import from arraymaker
-import parse
+import skarka.parse as parse
 
 def gdor():
   table5 = parse.df_from_file("./skarka/table5_classifications.dat")
