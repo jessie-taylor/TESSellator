@@ -13,7 +13,7 @@ def gdor():
 
   # Create list and put TIC IDs in list
   gdors = []
-  for tic in gdor["Name"]:
+  for tic in gdors["Name"]:
     gdors.append(tic)
 
   return gdors
@@ -30,7 +30,7 @@ def dsct():
   
   # Create list and put TIC IDs in list
   dscts = []
-  for tic in dsct["Name"]:
+  for tic in dscts["Name"]:
     dscts.append(tic)
 
   return dscts
