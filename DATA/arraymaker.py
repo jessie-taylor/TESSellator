@@ -140,33 +140,12 @@ def make_array(ids: list, catname: str):
   print(len(namearray))
 
  
-# outside of function - call on make_array to generate arrays
+# Call on make_array to build arrays for each category
 # for each one of the catalogs
 
 # Obtain list of EB TICs 
 eb_ids = ebs()
-# Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 100 for speed of testing
-# this str([TIC id] + "_lc") is the dictionary key the lightcurves are under
-# this str([TIC id] + "_dft") is the key for the dfts
-# ebs_data = get_dfts(eb_ids[0:1])
-# Save a backup of the data
-# So doesn't need to be redownloaded if needed later
-#for star in eb_ids:
-#  # Put in try/except because not all IDs are going to have lcs associated
-#  try:
-#    # Obtain lc from dictionary key
-#    lc = ebs_data[str(star + "_lc")]
-#    # Save lc to FITS file
-#    lc.to_fits(path = str("./FITS/" + star + ".fits"),
-#               overwrite = True)
-#  # If no TIC found (ie entry in eb_ids = None)
-#  except TypeError:
-#    continue
-#  # If no corresponding lc
-#  except KeyError:
-#    continue
-# Make and save arrays for data ------------------------------------ONLY NEEDS TO BE IDS, STUFF FROM BEFORE CAN BE MOVED ELSEWHERE
-make_array(eb_ids, "ebs") #--------------------------------------------------- FIRST 100 FOR TESTING ONLY
+make_array(eb_ids, "ebs")
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
