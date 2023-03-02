@@ -1,12 +1,8 @@
 # Rewriting for TESS data in 2023
-# Keep all import stuff from above (lines 2 - 6)
 from KEBC.get_ebs import ebs
 from get_dfts import get_dfts
+from skarka.get_gdor_dsct import gdor, dsct
 
-# First, gather the ids of one catalog using the kebc module ebs()
-# Then send the list of IDs to get_dfts to obtain a dataframe of the DFTs & IDs
-# Put them into arrays using the method from the original version of arraymaker
-# Save arrays in ./arrays
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -15,7 +11,7 @@ from datetime import datetime
 import lightkurve as lk
 from os import path, listdir
 from os.path import isfile, join
-
+ 
 
 # function for getting dfts from get_dfts
 # and putting them in arrays
@@ -62,7 +58,7 @@ def make_array(ids: list, catname: str):
   filelist= [f for f in listdir("./arrays/") if isfile(join("./arrays", f))]
   for f in filelist:
     if f[:(len(catname))] == catname and answer == None:
-      print ("\nArrays already exist for this classification.")
+      print ("\nArrays already exist for the class", catname)
       print ("Would you like to continue anyway (overwriting previous)? y/n")
       answer = input()
   if answer == "n":
@@ -140,34 +136,22 @@ def make_array(ids: list, catname: str):
   print(len(namearray))
 
  
-# outside of function - call on make_array to generate arrays
+# Call on make_array to build arrays for each category
 # for each one of the catalogs
 
 # Obtain list of EB TICs 
 eb_ids = ebs()
-# Obtain data for stars in EB TICs (given as dictionary) ~~~~~~~~~~~~~~~~~~~~~~Currently only first 100 for speed of testing
-# this str([TIC id] + "_lc") is the dictionary key the lightcurves are under
-# this str([TIC id] + "_dft") is the key for the dfts
-# ebs_data = get_dfts(eb_ids[0:1])
-# Save a backup of the data
-# So doesn't need to be redownloaded if needed later
-#for star in eb_ids:
-#  # Put in try/except because not all IDs are going to have lcs associated
-#  try:
-#    # Obtain lc from dictionary key
-#    lc = ebs_data[str(star + "_lc")]
-#    # Save lc to FITS file
-#    lc.to_fits(path = str("./FITS/" + star + ".fits"),
-#               overwrite = True)
-#  # If no TIC found (ie entry in eb_ids = None)
-#  except TypeError:
-#    continue
-#  # If no corresponding lc
-#  except KeyError:
-#    continue
-# Make and save arrays for data ------------------------------------ONLY NEEDS TO BE IDS, STUFF FROM BEFORE CAN BE MOVED ELSEWHERE
-make_array(eb_ids, "ebs") #--------------------------------------------------- FIRST 100 FOR TESTING ONLY
+# Build array of ebs
+make_array(eb_ids, "ebs")
+
+# Obtain list of gdor and dsct
+gdor_ids = gdor()
+make_array(gdor_ids, "gdor")
+
+dsct_ids = dsct()
+make_array(dsct_ids, "dsct")
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
 # This info is also still retained in the dft
+
