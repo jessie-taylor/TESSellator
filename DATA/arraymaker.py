@@ -1,12 +1,8 @@
 # Rewriting for TESS data in 2023
-# Keep all import stuff from above (lines 2 - 6)
 from KEBC.get_ebs import ebs
 from get_dfts import get_dfts
+from skarka.get_gdor_dsct import gdor, dsct
 
-# First, gather the ids of one catalog using the kebc module ebs()
-# Then send the list of IDs to get_dfts to obtain a dataframe of the DFTs & IDs
-# Put them into arrays using the method from the original version of arraymaker
-# Save arrays in ./arrays
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -15,7 +11,7 @@ from datetime import datetime
 import lightkurve as lk
 from os import path, listdir
 from os.path import isfile, join
-
+ 
 
 # function for getting dfts from get_dfts
 # and putting them in arrays
@@ -145,8 +141,17 @@ def make_array(ids: list, catname: str):
 
 # Obtain list of EB TICs 
 eb_ids = ebs()
+# Build array of ebs
 make_array(eb_ids, "ebs")
+
+# Obtain list of gdor and dsct
+gdor_ids = gdor()
+make_array(gdor_ids, "gdor")
+
+dsct_ids = dsct()
+make_array(dsct_ids, "dsct")
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
 # This info is also still retained in the dft
+
