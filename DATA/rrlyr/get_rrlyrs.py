@@ -13,6 +13,7 @@ def get_abs():
   # Drake (2013) only states coordinates of targets
   # So using these to try find star IDs
   # Define list for ids to enter
+  dirtytics = []
   tics = []
   ids = []
   table = parse.df_from_file("from_drake.txt")
@@ -30,15 +31,19 @@ def get_abs():
       ids.append(find_star["MAIN_ID"][0])
     except TypeError:
       continue
-
-  # Now find useable IDs using a modified TICer:
-  # send the IDs as strings to any_TICer
-  # First take each elem out of masked array into plain string
   
   # Now send to any_TICer
+  # Which is a version of TICer for non-KIC ID input
   for star in ids:
-    tics.append(any_TICer(star[0])
+    # Using index 0 to obtain string
+    dirtytics.append(any_TICer(star[0])
   
+  # Clean up to remove Nones
+  for star in dirtytics:
+    if star != None:
+      tics.append(star)
+    else:
+      continue
 
   return tics
 
