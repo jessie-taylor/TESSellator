@@ -1,11 +1,11 @@
-import parse_drakeedit as parse
+import rrlyr.parse_drakeedit as parse
 import lightkurve as lk
 from astroquery.simbad import Simbad
 import astropy.units as u
 import astropy.coordinates as coord
-from TICer import any_TICer
+from rrlyr.TICer import any_TICer
 
-# Change into module format after testing
+# Scripted to be imported from parent directory as module
 # This already returns TIC IDs, so no need to TICer after
 
 # First import all type-ab RR Lyrae stars
@@ -16,7 +16,7 @@ def get_abs():
   dirtytics = []
   tics = []
   ids = []
-  table = parse.df_from_file("from_drake.txt")
+  table = parse.df_from_file("./rrlyr/from_drake.txt")
   for i in range (0, len(table)):
     print ("on", str(i) + "/" + str(len(table)))
     radeg = table["RAdeg"][i]
