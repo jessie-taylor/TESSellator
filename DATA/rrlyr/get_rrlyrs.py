@@ -18,6 +18,7 @@ def get_abs():
   ids = []
   table = parse.df_from_file("from_drake.txt")
   for i in range (0, len(table)):
+    print ("on", str(i) + "/" + str(len(table)))
     radeg = table["RAdeg"][i]
     dedeg = table["DEdeg"][i]
     # Get main ID for target (will be a weird one, these stars are old)
@@ -35,8 +36,12 @@ def get_abs():
   # Now send to any_TICer
   # Which is a version of TICer for non-KIC ID input
   for star in ids:
-    # Using index 0 to obtain string
-    dirtytics.append(any_TICer(star[0])
+    if star != None:
+      # dirtytics as some will return None and need cleaning up
+      # Using index 0 to obtain string
+      dirtytics.append(any_TICer(star))
+    else:
+      continue
   
   # Clean up to remove Nones
   for star in dirtytics:
