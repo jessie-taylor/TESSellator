@@ -4,6 +4,7 @@ from astroquery.simbad import Simbad
 import astropy.units as u
 import astropy.coordinates as coord
 from rrlyr.TICer import any_TICer
+import csv
 
 # Scripted to be imported from parent directory as module
 # This already returns TIC IDs, so no need to TICer after
@@ -52,3 +53,15 @@ def get_abs():
 
   return tics
 
+# For RR Lyrae type-c TICS
+def get_rrcs():
+  # Obtain TICs from benko data
+  rrctics = []
+  # Open CSV file
+  with open("./rrlyr/from_benko_2023.txt") as csvfile:
+    # skipinitialspace as inconsistent numbers of spaces
+    reader = csv.reader(csvfile, skipinitialspace = True, delimiter = " ")
+    for row in reader:
+      # [-1] index as TICs are last entry on each row
+      rrctics.append(row[-1])
+  return rrctics
