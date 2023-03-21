@@ -34,3 +34,16 @@ def dsct():
     dscts.append(str(tic))
 
   return dscts
+
+def nvs():
+  table5 = parse.df_from_file("./skarka/table5_classifications.dat")
+  
+  # Non-variables come up as VType == None in the dataframe
+  # so need to be handled differently
+  nvs = []
+  for n in range (0, len(table5)):
+    if table5.iloc[n]["VType"] == None:
+      name = table5.iloc[n]["Name"].item()
+      nvs.append(str(name))
+  
+  return nvs

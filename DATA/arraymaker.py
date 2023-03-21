@@ -1,7 +1,8 @@
 # Rewriting for TESS data in 2023
 from KEBC.get_ebs import ebs
 from get_dfts import get_dfts
-from skarka.get_gdor_dsct import gdor, dsct
+from skarka.get_gdor_dsct import gdor, dsct, nvs
+from rrlyr.get_rrlyrs import get_abs, get_rrcs
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -150,6 +151,14 @@ make_array(gdor_ids, "gdor")
 
 dsct_ids = dsct()
 make_array(dsct_ids, "dsct")
+
+# see how it works with using both type a, b, and c at once (only 2 abs)
+rrlyr_ids = get_abs + get_rrcs
+make_array(rrlyr_ids, "rrlyr")
+
+nvids = nvs()
+make_array(nvids, "nv")
+
 
 # EXTRA INFO IS IN lc.meta, such as the TEFF etc, which will be useful later
 # It's a dictionary, so can use lc.meta["TEFF"] etc
