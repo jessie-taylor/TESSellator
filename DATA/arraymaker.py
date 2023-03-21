@@ -153,7 +153,7 @@ dsct_ids = dsct()
 make_array(dsct_ids, "dsct")
 
 # see how it works with using both type a, b, and c at once (only 2 abs)
-rrlyr_ids = get_abs + get_rrcs
+rrlyr_ids = get_abs() + get_rrcs()
 make_array(rrlyr_ids, "rrlyr")
 
 nvids = nvs()
