@@ -1,64 +1,78 @@
 import numpy as np
-from keras.utils import to_categorical
+#from keras.utils import to_categorical # COMMENTED WHILE TESTING
 from sklearn.model_selection import train_test_split
-import keras
-from keras.models import Sequential, Input, Model
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
-from keras.layers.normalization import BatchNormalization
-from keras.layers.advanced_activations import LeakyReLU
+#import keras
+#from keras.models import Sequential, Input, Model
+#from keras.layers import Dense, Dropout, Flatten
+#from keras.layers import Conv2D, MaxPooling2D
+#from keras.layers.normalization import BatchNormalization  # ALL THESE [LINES 4-9 COMMENTED WHILE TESTING
+#from keras.layers.advanced_activations import LeakyReLU
 import matplotlib.pyplot as plt
 
 # Loading the training as the first 1000 images and test as final 259.
-arraydir = '../DATA/arrays/'
+arraydir = './DATA/arrays/'
 
-train_Xgd1 = np.load(arraydir + 'New_GdArray.npy')
+train_Xgd1 = np.load(arraydir + 'gdor_387.npy')
 #train_Ygd = np.load('GdClass.npy')
 
-train_Xds1 = np.load(arraydir + 'New_DsArray.npy')
+train_Xds1 = np.load(arraydir + 'dsct_154.npy')
 #train_Yds = np.load('dsc.npy')
 
-train_Xhyb1 = np.load(arraydir + 'New_HybridArray.npy')
+# train_Xhyb1 = np.load(arraydir + 'New_HybridArray.npy')
 #train_Yhyb = np.load('hybridclass.npy')
 
-train_Xnon1 = np.load(arraydir + 'New_UnArray.npy')
-#train_Ynon = np.load('nonclass.npy')
+# As there are more than 1 array for nvs:
+non1 = np.load(arraydir + "nv_1000.npy")
+non2 = np.load(arraydir + "nv_2000.npy")
+non3 = np.load(arraydir + "nv_2800.npy")
+print("about to concatenate")
+train_Xnon1 = np.concatenate((non1, non2, non3), axis = 2)
+print("concatenated")
+#train_Xnon1 = np.load(arraydir + 'nv_1000.npy')
 
-train_Xbin1 = np.load(arraydir + 'New_BinArray.npy')
+train_Xbin1 = np.load(arraydir + 'ebs_501.npy')
+
+train_Xrrlyr1 = np.load(arraydir + "rrlyr_46.npy")
 
 train_Xgd =train_Xgd1.transpose(2, 0, 1)
 train_Xds =train_Xds1.transpose(2, 0, 1)
-train_Xhyb =train_Xhyb1.transpose(2, 0, 1)
+# train_Xhyb =train_Xhyb1.transpose(2, 0, 1)
 train_Xnon =train_Xnon1.transpose(2, 0, 1)
 train_Xbin = train_Xbin1.transpose(2,0,1)
+train_Xrrlyr = train_Xrrlyr1.transpose(2,0,1)
 
 train_Ygd=np.full(train_Xgd.shape[0], 1)
 train_Yds=np.full(train_Xds.shape[0], 2)
-train_Yhyb=np.full(train_Xhyb.shape[0], 3)
+#train_Yhyb=np.full(train_Xhyb.shape[0], 3)
 train_Ynon=np.full(train_Xnon.shape[0], 0)
 train_Ybin=np.full(train_Xbin.shape[0], 4) # IMPORTANT TO NOTE - I'VE MADE IT #4
+train_Yrrlyr = np.full(train_Xrrlyr.shape[0], 5)
 
-# uses the last 259 as test images
+# Setting the numbers to use as training sets 
+# if these say 1000 in the index ranges then it uses the first 1000 
+# to train and then the remainder for testing
+# Using 10% for the testing at this point, hence the round(TOTAL/10) function
+gdtraining_num = train_Xgd.shape[0]
+print("trainXgd.shape[0] = ", train_Xgd.shape[0])
+exit()
+test_Xgd = train_Xgd[round(387/10)::]
+test_Ygd = train_Ygd[round(387/10)::]
+train_Xgd = train_Xgd[:round(387/10):]
+train_Ygd = train_Ygd[:round(387/10):]
 
-test_Xgd = train_Xgd[1000::]
-test_Ygd = train_Ygd[1000::]
-train_Xgd = train_Xgd[:1000:]
-train_Ygd = train_Ygd[:1000:]
+test_Xds = train_Xds[round(154/10)::]
+test_Yds = train_Yds[round(154/10)::]
+train_Xds = train_Xds[:round(154/10):]
+train_Yds = train_Yds[:round(154/10):]
 
-test_Xds = train_Xds[1000::]
-test_Yds = train_Yds[1000::]
-train_Xds = train_Xds[:1000:]
-train_Yds = train_Yds[:1000:]
+#test_Xhyb = train_Xhyb[1000::]
+#test_Yhyb = train_Yhyb[1000::]
+#train_Xhyb = train_Xhyb[:1000:]
+#train_Yhyb = train_Yhyb[:1000:]
 
-test_Xhyb = train_Xhyb[1000::]
-test_Yhyb = train_Yhyb[1000::]
-train_Xhyb = train_Xhyb[:1000:]
-train_Yhyb = train_Yhyb[:1000:]
-#print(test_Xds.shape, test_Yds.shape , train_Xds.shape, train_Yds.shape)
-
-test_Xnon = train_Xnon[1000::]
-test_Ynon = train_Ynon[1000::]
-train_Xnon = train_Xnon[:1000:]
+test_Xnon = train_Xnon[round(2800/10)::]
+test_Ynon = train_Ynon[round(2800/10)::]
+train_Xnon = train_Xnon[:round(2800/10):]
 train_Ynon = train_Ynon[:1000:]
 #print(train_Xnon.shape, train_Ynon.shape)
 
@@ -66,6 +80,11 @@ test_Xbin = train_Xbin[50::] # NOTE these 4 lines are the new ones, and where I 
 test_Ybin = train_Ybin[50::]
 train_Xbin = train_Xbin[:50:]
 train_Ybin = train_Ybin[:50:]
+
+test_Xnon = train_Xnon[1000::]
+test_Ynon = train_Ynon[1000::]
+train_Xnon = train_Xnon[:1000:]
+train_Ynon = train_Ynon[:1000:]
 
 
 test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, test_Xhyb, test_Xbin])
