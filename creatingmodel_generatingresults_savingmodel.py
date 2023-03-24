@@ -1,5 +1,5 @@
 import numpy as np
-#from keras.utils import to_categorical # COMMENTED WHILE TESTING
+from keras.utils import to_categorical # COMMENTED WHILE TESTING
 from sklearn.model_selection import train_test_split
 #import keras
 #from keras.models import Sequential, Input, Model
@@ -125,17 +125,21 @@ print("Train Permutation: ",permutation)
 
 # Keeping the final permutation saved for safety.
 
-text_file = open("FinalTrainPermutation.txt", "w")
+text_file = open("./model/FinalTrainPermutation.txt", "w")
 
 
-# Writes the permutation to a text file so we can find star images in later predicted classes
-# this helps us find the stars with high/low confidence/accuracy. It's good stuff as we can run a script to
-# compare class here with the predicted version in the output of Preediction.py
+# Writes the permutation to a text file 
+# so we can find star images in later predicted classes
+# this helps us find the stars with high/low confidence/accuracy. 
+# It's good stuff as we can run a script to compare
+# class here with the predicted version in the output of Preediction.py
 
 position = 0
 
 for image in permutation:
-    text_file.write(str(position) + ":" + str(image)+", class: " + str(train_Y[position])+"\n")
+    text_file.write(str(position) + ":" 
+                    + str(image) + ", class: " 
+		    + str(train_Y[position])+"\n")
     position += 1
 text_file.close()
 
@@ -246,7 +250,7 @@ except:
 # Saving the predictions and weightings for use in star analysis. before softmax. We do the same when predicting on
 # all KASOC data with the same format. So simple, but so vital. This is how we find results and eliminate low confidence.
 predic = 0
-text_file = open("Predictions.txt", "w")
+text_file = open("./model/Predictions.txt", "w")
 
 for predictionite in predicted_classes:
 
@@ -264,7 +268,7 @@ text_file.close()
 # reverses one hot encoding.
 predicted_classes = np.argmax(np.round(predicted_classes), axis=1)
 print("c ", predicted_classes)
-text_file = open("Predictions_max.txt", "w")
+text_file = open("./model/Predictions_max.txt", "w")
 
 for i in range(len(predicted_classes)):
     text_file.write(str(i) + ":" + str(predicted_classes[i]) +"\t" +str(test_Y[i])+"\n")
@@ -289,14 +293,14 @@ from sklearn.metrics import classification_report
 target_names = ["Class {}".format(i) for i in range(num_classes)]
 print((classification_report(test_Y, predicted_classes, target_names=target_names)))
 
-text_file = open("Output.txt", "w")
+text_file = open("./model/Output.txt", "w")
 text_file.write("\n Final result 20 epochs Found %d correct labels" % len(correct))
 text_file.close()
 
 
 # JT ~~ ADDED AFTER ~~
 # saves the model for later use
-classifier.save('./saved_classifier_model')
+classifier.save('./model/saved_classifier_model')
 
 
 # This plots the accuracy over time. Was good for getting a cool graph for the thesis.
@@ -311,7 +315,7 @@ print("Found %d incorrect labels" % len(incorrect))
 
 
 # Saves our full report.
-text_file = open("results.txt", "w")
+text_file = open("./model/results.txt", "w")
 
 
 text_file.write((classification_report(test_Y, predicted_classes, target_names=target_names)))
@@ -320,7 +324,7 @@ text_file.close()
 
 
 incor =0
-text_file2 = open("Incorrect_results.txt", "w")
+text_file2 = open("./model/Incorrect_results.txt", "w")
 
 for l in incorrect:
     text_file2.write(str(incor) + ":" + str(l)+"\n")
@@ -328,7 +332,7 @@ for l in incorrect:
 text_file2.close()
 cor =0
 
-text_file3 = open("correct_results.txt", "w")
+text_file3 = open("./model/correct_results.txt", "w")
 
 for c in correct:
     text_file3.write(str(cor) + ":" + str(c)+"\n")
@@ -344,7 +348,7 @@ plt.ylabel('Accuracy')
 plt.xlabel('epoch')
 plt.legend(['training', 'test'], loc='upper left')
 
-plt.savefig('accuracytestfinal.png')
+plt.savefig('./model/accuracytestfinal.png')
 
 try:
     plt.clear()
@@ -363,5 +367,5 @@ plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['training', 'test'], loc='upper left')
 
-plt.savefig('Losstestfinal.png')
+plt.savefig('./model/Losstestfinal.png')
 
