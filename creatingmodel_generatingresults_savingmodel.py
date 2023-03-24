@@ -21,13 +21,17 @@ train_Xds1 = np.load(arraydir + 'dsct_154.npy')
 # train_Xhyb1 = np.load(arraydir + 'New_HybridArray.npy')
 #train_Yhyb = np.load('hybridclass.npy')
 
-# As there are more than 1 array for nvs:
+# As there is more than 1 array for nvs:
 non1 = np.load(arraydir + "nv_1000.npy")
 non2 = np.load(arraydir + "nv_2000.npy")
 non3 = np.load(arraydir + "nv_2800.npy")
 print("about to concatenate")
 train_Xnon1 = np.concatenate((non1, non2, non3), axis = 2)
 print("concatenated")
+# Clearing up some memory
+non1 = 0
+non2 = 0
+non3 = 0
 #train_Xnon1 = np.load(arraydir + 'nv_1000.npy')
 
 train_Xbin1 = np.load(arraydir + 'ebs_501.npy')
@@ -43,59 +47,73 @@ train_Xrrlyr = train_Xrrlyr1.transpose(2,0,1)
 
 train_Ygd=np.full(train_Xgd.shape[0], 1)
 train_Yds=np.full(train_Xds.shape[0], 2)
-#train_Yhyb=np.full(train_Xhyb.shape[0], 3)
+#train_Yhyb=np.full(train_Xhyb.shape[0], 5)
 train_Ynon=np.full(train_Xnon.shape[0], 0)
-train_Ybin=np.full(train_Xbin.shape[0], 4) # IMPORTANT TO NOTE - I'VE MADE IT #4
-train_Yrrlyr = np.full(train_Xrrlyr.shape[0], 5)
+train_Ybin=np.full(train_Xbin.shape[0], 3) 
+train_Yrrlyr = np.full(train_Xrrlyr.shape[0], 4)
 
 # Setting the numbers to use as training sets 
 # if these say 1000 in the index ranges then it uses the first 1000 
 # to train and then the remainder for testing
 # Using 10% for the testing at this point, hence the round(TOTAL/10) function
-gdtraining_num = train_Xgd.shape[0]
-print("trainXgd.shape[0] = ", train_Xgd.shape[0])
-exit()
-test_Xgd = train_Xgd[round(387/10)::]
-test_Ygd = train_Ygd[round(387/10)::]
-train_Xgd = train_Xgd[:round(387/10):]
-train_Ygd = train_Ygd[:round(387/10):]
+# to save 90% for training
+def ninety_perc(arrayname):
+  amount = arrayname.shape[0] - round(arrayname.shape[0]/10)
+  return amount
 
-test_Xds = train_Xds[round(154/10)::]
-test_Yds = train_Yds[round(154/10)::]
-train_Xds = train_Xds[:round(154/10):]
-train_Yds = train_Yds[:round(154/10):]
+#get 90% of total GDs first
+gd_90 = ninety_perc(train_Xgd)
+test_Xgd = train_Xgd[gd_90::]
+test_Ygd = train_Ygd[gd_90::]
+train_Xgd = train_Xgd[:gd_90:]
+train_Ygd = train_Ygd[:gd_90:]
 
+ds_90 = ninety_perc(train_Xds)
+test_Xds = train_Xds[ds_90::]
+test_Yds = train_Yds[ds_90::]
+train_Xds = train_Xds[:ds_90:]
+train_Yds = train_Yds[:ds_90:]
+
+#hyb_90 = ninety_perc(train_Xhyb)
 #test_Xhyb = train_Xhyb[1000::]
 #test_Yhyb = train_Yhyb[1000::]
 #train_Xhyb = train_Xhyb[:1000:]
 #train_Yhyb = train_Yhyb[:1000:]
 
-test_Xnon = train_Xnon[round(2800/10)::]
-test_Ynon = train_Ynon[round(2800/10)::]
-train_Xnon = train_Xnon[:round(2800/10):]
-train_Ynon = train_Ynon[:1000:]
+non_90 = ninety_perc(train_Xnon)
+test_Xnon = train_Xnon[non_90::]
+test_Ynon = train_Ynon[non_90::]
+train_Xnon = train_Xnon[:non_90:]
+train_Ynon = train_Ynon[:non_90:]
 #print(train_Xnon.shape, train_Ynon.shape)
 
-test_Xbin = train_Xbin[50::] # NOTE these 4 lines are the new ones, and where I could change it so it uses less than 1000 for training
-test_Ybin = train_Ybin[50::]
-train_Xbin = train_Xbin[:50:]
-train_Ybin = train_Ybin[:50:]
+bin_90 = ninety_perc(train_Xbin)
+test_Xbin = train_Xbin[bin_90::]
+test_Ybin = train_Ybin[bin_90::]
+train_Xbin = train_Xbin[:bin_90:]
+train_Ybin = train_Ybin[:bin_90:]
 
-test_Xnon = train_Xnon[1000::]
-test_Ynon = train_Ynon[1000::]
-train_Xnon = train_Xnon[:1000:]
-train_Ynon = train_Ynon[:1000:]
-
-
-test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, test_Xhyb, test_Xbin])
-
-test_Y = np.concatenate([test_Ynon, test_Ygd, test_Yds, test_Yhyb, test_Ybin])
+rrlyr_90 = ninety_perc(train_Xrrlyr)
+test_Xrrlyr = train_Xrrlyr[rrlyr_90::]
+test_Yrrlyr = train_Yrrlyr[rrlyr_90::]
+train_Xrrlyr = train_Xrrlyr[:rrlyr_90:]
+train_Yrrlyr = train_Yrrlyr[:rrlyr_90:]
 
 
-train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, train_Xhyb, train_Xbin])
-train_Y = np.concatenate([train_Ynon, train_Ygd, train_Yds, train_Yhyb, train_Ybin])
+test_X = np.concatenate([test_Xnon, test_Xgd, test_Xds, 
+                         test_Xbin, test_Xrrlyr])
 
-np.save('test_image_data.npy', test_X)
+test_Y = np.concatenate([test_Ynon, test_Ygd, test_Yds,
+                         test_Ybin, test_Yrrlyr])
+
+
+train_X = np.concatenate([train_Xnon, train_Xgd, train_Xds, 
+                          train_Xbin, train_Xrrlyr])
+
+train_Y = np.concatenate([train_Ynon, train_Ygd, train_Yds,
+                          train_Ybin, train_Yrrlyr])
+
+np.save('./model/test_image_data.npy', test_X)
 
 print(test_X.shape, test_Y.shape, train_X.shape, train_Y.shape)
 
