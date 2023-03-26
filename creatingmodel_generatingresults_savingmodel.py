@@ -1,13 +1,14 @@
 import numpy as np
-from keras.utils import to_categorical # COMMENTED WHILE TESTING
+from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-#import keras
-#from keras.models import Sequential, Input, Model
-#from keras.layers import Dense, Dropout, Flatten
-#from keras.layers import Conv2D, MaxPooling2D
-#from keras.layers.normalization import BatchNormalization  # ALL THESE [LINES 4-9 COMMENTED WHILE TESTING
-#from keras.layers.advanced_activations import LeakyReLU
+import keras
+from keras.models import Sequential, Input, Model
+from keras.layers import Dense, Dropout, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+from keras.layers import BatchNormalization
+from keras.layers.advanced_activations import LeakyReLU
 import matplotlib.pyplot as plt
+import tensorflow
 
 # Loading the training as the first 1000 images and test as final 259.
 arraydir = './DATA/arrays/'
@@ -162,22 +163,30 @@ test_X = test_X / 255.
 
 print(test_X.shape, test_Y.shape, train_X.shape, train_Y.shape)
 
-# Change the labels from categorical to one-hot encoding meaning the model cannot say that class 3 is more important
-# than class 2.
+# Change the labels from categorical to one-hot encoding meaning the model 
+# cannot say that class 3 is more important than class 2.
 train_Y_one_hot = to_categorical(train_Y)
 test_Y_one_hot = to_categorical(test_Y)
 
 # Display the change for category label using one-hot encoding
-print('Original label:', train_Y[0], train_Y[1], train_Y[2],train_Y[3], train_Y[4], train_Y[5])
-print('After conversion to one-hot:', train_Y_one_hot[0], train_Y_one_hot[1], train_Y_one_hot[2] )
+print('Original label:', train_Y[0], train_Y[1], train_Y[2],
+                         train_Y[3], train_Y[4], train_Y[5])
+print('After conversion to one-hot:', train_Y_one_hot[0], 
+                                      train_Y_one_hot[1], 
+                                      train_Y_one_hot[2] )
 print('test Original label:', test_Y[0])
 print('test After conversion to one-hot:', test_Y_one_hot[0])
 
 # Splits data into 80% training 20% validation
-train_X, valid_X, train_label, valid_label = train_test_split(train_X, train_Y_one_hot, test_size=0.3, random_state=13)
+train_X, valid_X, train_label, valid_label = train_test_split(train_X, 
+                                                              train_Y_one_hot, 
+							      test_size=0.3, 
+							      random_state=13)
 
-# Number of images per batch, updated weights afterwards. Small is faster and easier, but less accurate at
-# guessing the gradient, as high number batches have a lot more info per update.
+# Number of images per batch, updated weights afterwards.
+# Small is faster and easier, but less accurate at
+# guessing the gradient, as high number batches have 
+# a lot more info per update.
 batch_size = 2
 # Number of runs through all data.
 epochs = 20
@@ -187,14 +196,17 @@ num_classes = 5
 
 
 
-# Every layer of the algorithm added one at a time. Sequential model with the input shape we used earlier. Linear
+# Every layer of the algorithm added one at a time. 
+# Sequential model with the input shape we used earlier. Linear
 # activation with LeakyRelu added in the layer after.
 classifier = Sequential()
-classifier.add(Conv2D(32, kernel_size=(3, 3), activation='linear', input_shape=(480, 640, 1), padding='same'))
+classifier.add(Conv2D(32, kernel_size=(3, 3), activation='linear',
+                      input_shape=(480, 640, 1), padding='same'))
 classifier.add(LeakyReLU(alpha=0.1))
 
 
-# Literally the mot important line of code. Without these, EVERY prediction is the same confidence and value giving a completely wrong total result.
+# Literally the mot important line of code. Without these, EVERY prediction
+# is the same confidence and value giving a completely wrong total result.
 classifier.add(BatchNormalization())
 
 # Read the thesis on this stuff. Max pooling is basically simplifying it from what I recall.
@@ -215,10 +227,12 @@ classifier.add(LeakyReLU(alpha=0.1))
 # 4: class 0 or class 1 2 3
 classifier.add(Dense(5, activation='softmax'))
 
-# Finally compiling all layers with the most accurate lr and metric. Categorical gives us prediction weightings too, I
+# Finally compiling all layers with the most accurate lr and metric.
+#Categorical gives us prediction weightings too, I
 # think. Still, can't use binary so.
 classifier.compile(loss=keras.losses.categorical_crossentropy,
-                   optimizer=keras.optimizers.SGD(lr=0.00001, momentum=0, decay=0.0, nesterov=False),
+                   optimizer=tensorflow.keras.optimizers.SGD(lr=0.00001, 
+		   momentum=0, decay=0.0, nesterov=False),
                    metrics=['accuracy'])
 
 # Shows some parameters in each layer and the total parameters
@@ -341,8 +355,8 @@ text_file3.close()
 
 
 print(history.history)
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
 plt.title('Model accuracy over time')
 plt.ylabel('Accuracy')
 plt.xlabel('epoch')
@@ -351,7 +365,7 @@ plt.legend(['training', 'test'], loc='upper left')
 plt.savefig('./model/accuracytestfinal.png')
 
 try:
-    plt.clear()
+    plt.close()
 except:
     pass
 
