@@ -272,10 +272,10 @@ for predictionite in predicted_classes:
     predic += 1
 text_file.close()
 
-
-
-
-
+# Added 2023
+# Trying to get previous thing in a usable format
+# This will only work if predicted_classes is a numpy array
+np.save("predictions.npy", predicted_classes, allow_pickle = True)
 
 
 # Takes the max value and its position(?) in the array to find the true class. [0,1...0] -> class 1. Basically
