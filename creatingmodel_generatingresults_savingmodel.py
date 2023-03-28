@@ -280,7 +280,8 @@ np.save("./model/predictions.npy", predicted_classes, allow_pickle = True)
 
 # Takes the max value and its position(?) in the array to find the true class. [0,1...0] -> class 1. Basically
 # reverses one hot encoding.
-predicted_classes = np.argmax(np.round(predicted_classes), axis=1)
+# 2023 update: got rid of rounding on predicted_classes
+predicted_classes = np.argmax(predicted_classes, axis=1)
 print("c ", predicted_classes)
 text_file = open("./model/Predictions_max.txt", "w")
 
