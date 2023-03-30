@@ -9,7 +9,7 @@ from time import sleep
 #     ~                    ~
 #  ~                          ~
 # ~ ~ ~ ~ Module version ~ ~ ~ ~ #
-def ebs():
+def murphy_dsct():
   """
   Provides TIC IDs for the stars within the dsct catalogue
   from Murphy et al. 2019. 
