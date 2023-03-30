@@ -25,7 +25,7 @@ def murphy_dsct():
   # Stripping "\n" from the ends of lines
   dsct_kics = []
   for kic in raw_kics:
-    if kics[-1:] == "\n":
+    if kic[-1:] == "\n":
       kic = kic[:-1]
     dsct_kics.append(kic)
   
