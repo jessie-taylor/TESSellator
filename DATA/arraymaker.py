@@ -3,6 +3,7 @@ from KEBC.get_ebs import ebs
 from get_dfts import get_dfts
 from skarka.get_gdor_dsct import gdor, dsct, nvs
 from rrlyr.get_rrlyrs import get_abs, get_rrcs
+from dsct_murphy.get_extra_dsct import murphy_dsct
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -149,7 +150,7 @@ make_array(eb_ids, "ebs")
 gdor_ids = gdor()
 make_array(gdor_ids, "gdor")
 
-dsct_ids = dsct()
+dsct_ids = dsct() + murphy_dsct()
 make_array(dsct_ids, "dsct")
 
 # see how it works with using both type a, b, and c at once (only 2 abs)
