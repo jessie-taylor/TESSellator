@@ -16,7 +16,7 @@ arraydir = './DATA/arrays/'
 train_Xgd1 = np.load(arraydir + 'gdor_387.npy')
 #train_Ygd = np.load('GdClass.npy')
 
-train_Xds1 = np.load(arraydir + 'dsct_154.npy')
+train_Xds1 = np.load(arraydir + 'dsct_825.npy')
 #train_Yds = np.load('dsc.npy')
 
 # train_Xhyb1 = np.load(arraydir + 'New_HybridArray.npy')
