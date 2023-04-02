@@ -30,9 +30,9 @@ print("about to concatenate")
 train_Xnon1 = np.concatenate((non1, non2, non3), axis = 2)
 print("concatenated")
 # Clearing up some memory
-non1 = 0
-non2 = 0
-non3 = 0
+del non1
+del non2
+del non3
 #train_Xnon1 = np.load(arraydir + 'nv_1000.npy')
 
 train_Xbin1 = np.load(arraydir + 'ebs_501.npy')
