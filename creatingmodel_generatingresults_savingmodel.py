@@ -24,16 +24,15 @@ train_Xds1 = np.load(arraydir + 'dsct_825.npy')
 
 # As there is more than 1 array for nvs:
 non1 = np.load(arraydir + "nv_1000.npy")
-non2 = np.load(arraydir + "nv_2000.npy")
-non3 = np.load(arraydir + "nv_2800.npy")
+non2 = np.load(arraydir + "nv_1587.npy")
+#non3 = np.load(arraydir + "nv_2800.npy")
 print("about to concatenate")
-train_Xnon1 = np.concatenate((non1, non2, non3), axis = 2)
+train_Xnon1 = np.concatenate((non1, non2), axis = 2)
 print("concatenated")
 # Clearing up some memory
 del non1
 del non2
-del non3
-#train_Xnon1 = np.load(arraydir + 'nv_1000.npy')
+#del non3
 
 train_Xbin1 = np.load(arraydir + 'ebs_501.npy')
 
