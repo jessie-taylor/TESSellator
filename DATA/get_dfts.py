@@ -22,11 +22,8 @@ def get_dfts(ids: list):
   
   # Check for stars which have been skipped by previous runs
   # due to no data remotely
-  prev_skipped = []
   with open("skippedlist.txt", "r") as fp:
-    for line in fp:
-      x = line[:-1]
-      prev_skipped.append(x)
+    prev_skipped = [line.strip() for line in fp]
 
   for star in ids:
     #                                           ~~~~~~~~ edited it line by line
@@ -103,8 +100,12 @@ def get_dfts(ids: list):
         skippedlist.append(star)
 
     # Write list of skipped files so they can be skipped on later runs
+    # first put together the previous list and the one from this run
+    for star in skippedlist:
+      prev_skipped.append(star)
+    # Now both are together, write to file
     with open("skippedlist.txt", "w") as fp:
-      fp.write("\n".join(skippedlist))
+      fp.write("\n".join(prev_skipped))
 
   # Print total number of stars and those skipped due to no available data
   print( "\nTotal stars searched for:", len(ids), 
