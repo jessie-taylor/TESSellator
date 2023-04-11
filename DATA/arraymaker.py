@@ -94,7 +94,7 @@ def make_array(ids: list, catname: str):
     # for plotting, can get frequency with dft.frequency
     # can also obtain period and power the same way 
     plt.plot(dft.frequency, dft.power)
-    plt.ylim(-1, 500)
+    plt.ylim(-1, 230)
     plt.savefig("arraymakingplot_deleteaftercomplete.png")
     
     # Add image to array
