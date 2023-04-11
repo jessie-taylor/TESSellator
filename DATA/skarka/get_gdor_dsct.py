@@ -35,7 +35,21 @@ def dsct():
 
   return dscts
 
+# New version, which uses the lists which have been manually reviewed
 def nvs():
+  nvs = []
+  # Just turn these np arrays to regular lists
+  nvs1 = np.load("./skarka/reviewed_nvs/nvs_keep_1000.npy")
+  nvs2 = np.load("./skarka/reviewed_nvs/nvs_keep_2000.npy")
+  for star in nvs1:
+    nvs.append(str(star))
+  for star in nvs2:
+    nvs.append(str(star))
+
+  return nvs
+
+# Old version, deprecated
+def nvs_old():
   table5 = parse.df_from_file("./skarka/table5_classifications.dat")
   
   # Non-variables come up as VType == None in the dataframe
