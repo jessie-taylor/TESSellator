@@ -14,7 +14,7 @@ def get_dfts(ids: list):
   """
   Take description from above and make it fancy and nice
   """
-  skippedlist = []
+  #skippedlist = []
   # Creating dictionary which will be used as output
   # format will be [star_name]_lc for lightcurve
   # and [star_name]_dft for dft
@@ -23,7 +23,7 @@ def get_dfts(ids: list):
   # Check for stars which have been skipped by previous runs
   # due to no data remotely
   with open("skippedlist.txt", "r") as fp:
-    prev_skipped = [line.strip() for line in fp]
+    skippedlist = [line.strip() for line in fp]
 
   for star in ids:
     #                                           ~~~~~~~~ edited it line by line
@@ -32,9 +32,8 @@ def get_dfts(ids: list):
     #                                                                  dared me
 
     # Check if star has been skipped before:
-    if prev_skipped.count(str(star)) > 0:
+    if skippedlist.count(str(star)) > 0:
       print ("Star skipped due to 0 data on previous runs. Continuing to next")
-      skippedlist.append(star)
       continue
 
     # Check if lc already lives in ./FITS/
@@ -99,13 +98,9 @@ def get_dfts(ids: list):
         print("Skipped star", star)
         skippedlist.append(star)
 
-    # Write list of skipped files so they can be skipped on later runs
-    # first put together the previous list and the one from this run
-    for star in skippedlist:
-      prev_skipped.append(star)
     # Now both are together, write to file
     with open("skippedlist.txt", "w") as fp:
-      fp.write("\n".join(prev_skipped))
+      fp.write("\n".join(skippedlist))
 
   # Print total number of stars and those skipped due to no available data
   print( "\nTotal stars searched for:", len(ids), 
