@@ -188,7 +188,7 @@ train_X, valid_X, train_label, valid_label = train_test_split(train_X,
 # a lot more info per update.
 batch_size = 2
 # Number of runs through all data.
-epochs = 20
+epochs = 50
 # Used for plotting results later. Number of classes duh.
 num_classes = 5
 
